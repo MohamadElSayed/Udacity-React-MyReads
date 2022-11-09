@@ -4,7 +4,6 @@ import { shelves } from "../../../BookShelf/BookShelf";
 const ExistingBookMenu = ({ shelf, onShelfSelection }) => {
   const handleShelfSelection = (e, newShelf) => {
     e.preventDefault();
-    debugger;
     onShelfSelection(newShelf);
   };
 
