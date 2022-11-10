@@ -8,20 +8,6 @@ const BookSearch = ({ bookCase, onBookShelfChange }) => {
   const [books, setBooks] = useState([]);
   const [search, setSearch] = useState("");
 
-  // const getBookShelf = () => {
-  //   let updatedBookList = [];
-  //   books.forEach((book) => {
-  //     let newShelf = bookCase.filter((b) => b.id === book.id)[0].shelf;
-  //     if (newShelf !== book.shelf) {
-  //       book.shelf = newShelf;
-  //       updatedBookList.push(book);
-  //     } else {
-  //       updatedBookList.push(book);
-  //     }
-  //   });
-  //   setBooks(updatedBookList);
-  // };
-
   const getBooksSearch = async (searchText) => {
     const bookslist = await BooksAPI.search(searchText, 100);
     return bookslist;
