@@ -13,9 +13,7 @@ const ExistingBookMenu = ({ shelf, onShelfSelection }) => {
         onChange={(e) => handleShelfSelection(e, e.target.value)}
         value={shelf}
       >
-        <option value="none" disabled>
-          Move to...
-        </option>
+        <option disabled>Move to...</option>
         {shelves().map((s) => {
           return (
             <option key={s.id} value={s.value}>
@@ -23,7 +21,6 @@ const ExistingBookMenu = ({ shelf, onShelfSelection }) => {
             </option>
           );
         })}
-        <option value="none">None</option>
       </select>
     </div>
   );
