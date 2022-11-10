@@ -23,7 +23,7 @@ const ExistingBookMenu = ({ shelf, onShelfSelection }) => {
             </option>
           );
         })}
-        <option value="">None</option>
+        <option value="none">None</option>
       </select>
     </div>
   );
