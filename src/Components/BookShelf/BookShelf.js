@@ -6,6 +6,7 @@ export const shelves = () => {
     { id: 1, name: "Currently Reading", value: "currentlyReading" },
     { id: 2, name: "Want to Read", value: "wantToRead" },
     { id: 3, name: "Read", value: "read" },
+    { id: 4, name: "None", value: "none" },
   ];
 };
 
