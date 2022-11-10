@@ -1,27 +1,8 @@
-import { useEffect, useState } from "react";
-import * as BooksAPI from "../api/BooksAPI";
 import { Link } from "react-router-dom";
 import { shelves, BookShelf } from "./BookShelf/BookShelf";
+import PropTypes from "prop-types";
 
-const BookCase = () => {
-  const [books, setBooks] = useState([]);
-
-  useEffect(() => {
-    const getAllBooks = async () => {
-      const res = await BooksAPI.getAll();
-      setBooks(res);
-    };
-    getAllBooks();
-  }, []);
-
-  const handleBookShelfChange = (book) => {
-    let restBooks = books.filter((b) => b.id !== book.id);
-
-    shelves().filter((s) => s.value === book.shelf).length > 0
-      ? setBooks([...restBooks, book])
-      : setBooks([...restBooks]);
-  };
-
+const BookCase = ({ books, onBookShelfChange }) => {
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -36,7 +17,7 @@ const BookCase = () => {
                 books={books.filter(
                   (b) => b.shelf.toLowerCase() === s.value.toLowerCase()
                 )}
-                onBookShelfChange={handleBookShelfChange}
+                onBookShelfChange={onBookShelfChange}
                 shelf={s.name}
               />
             );
@@ -51,3 +32,12 @@ const BookCase = () => {
 };
 
 export default BookCase;
+
+BookCase.prototypes = {
+  books: PropTypes.arrayOf(
+    PropTypes.shape({
+      shelf: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  onBookShelfChange: PropTypes.func.isRequired,
+};
