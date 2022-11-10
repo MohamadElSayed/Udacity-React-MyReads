@@ -10,18 +10,20 @@ const BookCase = ({ books, onBookShelfChange }) => {
       </div>
       <div className="list-books-content">
         <div>
-          {shelves().map((s) => {
-            return (
-              <BookShelf
-                key={s.id}
-                books={books.filter(
-                  (b) => b.shelf.toLowerCase() === s.value.toLowerCase()
-                )}
-                onBookShelfChange={onBookShelfChange}
-                shelf={s.name}
-              />
-            );
-          })}
+          {shelves()
+            .filter((s) => s.value !== "none")
+            .map((s) => {
+              return (
+                <BookShelf
+                  key={s.id}
+                  books={books.filter(
+                    (b) => b.shelf.toLowerCase() === s.value.toLowerCase()
+                  )}
+                  onBookShelfChange={onBookShelfChange}
+                  shelf={s.name}
+                />
+              );
+            })}
         </div>
       </div>
       <div className="open-search">
