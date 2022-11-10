@@ -2,29 +2,48 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as BooksAPI from "../../api/BooksAPI";
 import ListBooks from "../ListBooks/ListBooks";
-import { shelves } from "../BookShelf/BookShelf";
+import PropTypes from "prop-types";
 
-const BookSearch = () => {
+const BookSearch = ({ bookCase, onBookShelfChange }) => {
   const [books, setBooks] = useState([]);
   const [search, setSearch] = useState("");
 
-  const getlistofBooks = async (bookSearch) => {
-    let bookslist = await BooksAPI.search(bookSearch, 100);
-    Array.isArray(bookslist) && bookslist.length > 0
-      ? setBooks(bookslist)
-      : setBooks([]);
+  // const getBookShelf = () => {
+  //   let updatedBookList = [];
+  //   books.forEach((book) => {
+  //     let newShelf = bookCase.filter((b) => b.id === book.id)[0].shelf;
+  //     if (newShelf !== book.shelf) {
+  //       book.shelf = newShelf;
+  //       updatedBookList.push(book);
+  //     } else {
+  //       updatedBookList.push(book);
+  //     }
+  //   });
+  //   setBooks(updatedBookList);
+  // };
+
+  const getBooksSearch = async (searchText) => {
+    const bookslist = await BooksAPI.search(searchText, 100);
+    return bookslist;
   };
 
   useEffect(() => {
-    getlistofBooks(search);
-  }, [search]);
+    const handleSearchChange = async () => {
+      let bookslist = await getBooksSearch(search);
 
-  const handleBookShelfChange = (book) => {
-    if (shelves().filter((s) => s.value === book.shelf).length > 0) {
-      let restBooks = books.filter((b) => b.id !== book.id);
-      setBooks([...restBooks]);
-    }
-  };
+      if (Array.isArray(bookslist) && bookslist.length > 0) {
+        bookslist.forEach((book) => {
+          if (bookCase.filter((b) => b.id === book.id).length === 1) {
+            book.shelf = bookCase.filter((b) => b.id === book.id)[0].shelf;
+          }
+        });
+        setBooks(bookslist);
+      } else {
+        setBooks([]);
+      }
+    };
+    handleSearchChange();
+  }, [bookCase, search]);
 
   return (
     <div className="search-books">
@@ -45,10 +64,19 @@ const BookSearch = () => {
         </div>
       </div>
       <div className="search-books-results">
-        <ListBooks books={books} onBookShelfChange={handleBookShelfChange} />
+        <ListBooks books={books} onBookShelfChange={onBookShelfChange} />
       </div>
     </div>
   );
 };
 
 export default BookSearch;
+
+BookSearch.prototypes = {
+  bookCase: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  onBookShelfChange: PropTypes.func.isRequired,
+};
